@@ -1,12 +1,23 @@
 const http = require('http')
+const url = require ('url')
 
 const hostname = '127.0.0.1'
 const port = 3000
 
 const server = http.createServer((req, res) => {
+
+  let body = 'Hello World'
+  const parsedUrl = url.parse(req.url, true)
+
+  if (parsedUrl.pathname === '/hello') {
+    if (parsedUrl.query.name) {
+      body = `Hello ${parsedUrl.query.name}`
+    }
+  }
+
   res.statusCode = 200
   res.setHeader('Content-Type', 'text/plain')
-  res.end('Hello World\n')
+  res.end(body)
 })
 
 server.listen(port, hostname, () => {
